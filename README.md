@@ -1,2 +1,2 @@
 # k8s-client
-a kubernetes client with go
+a kubernetes client with go language
