@@ -11,29 +11,48 @@ type Resource struct {
 
 // 资源类型
 const (
+	// core
 	RESOURCE_CONFIG_MAP                 = "ConfigMap"
 	RESOURCE_PERSISTENT_VOLUME_CLAIM    = "PersistentVolumeClaim"
 	RESOURCE_PERSISTENT_VOLUME          = "PersistentVolume"
 	RESOURCE_SECRET                     = "Secret"
-	RESOURCE_STORAGE_CLASS              = "StorageClass"
-	RESOURCE_SERVICE                    = "Service"
 	RESOURCE_POD                        = "Pod"
+	RESOURCE_SERVICE                    = "Service"
 	RESOURCE_REPLICATION_CONTROLLER     = "ReplicationController"
 	RESOURCE_NAMESPACE                  = "Namespace"
 	RESOURCE_NODE                       = "Node"
-	RESOURCE_STATEFULE_SET              = "StatefulSet"
 	RESOURCE_RESOURCE_QUOTA             = "ResourceQuota"
-	RESOURCE_JOB                        = "Job"
-	RESOURCE_CRON_JOB                   = "CronJob"
-	RESOURCE_INGRESS                    = "Ingress"
+	RESOURCE_LIMIT_RANGE                = "LimitRange"
+
+	// storage
+	RESOURCE_STORAGE_CLASS              = "StorageClass"
+
+
+	// apps
+	RESOURCE_STATEFULE_SET              = "StatefulSet"
 	RESOURCE_DAEMONSET                  = "DaemonSet"
 	RESOURCE_DEPLOYMENT                 = "Deployment"
 	RESOURCE_INGRESS_CONTROLLER         = "IngressController"
-	RESOURCE_HORIZONTAL_POD_AUTOSCALER  = "HorizontalPodAutoscaler"
 	RESOURCE_REPLICASET                 = "ReplicaSet"
-	RESOURCE_LIMIT_RANGE                = "LimitRange"
+
+	// batch
+	RESOURCE_JOB                        = "Job"
+	RESOURCE_CRON_JOB                   = "CronJob"
+
+	// extensions
+	RESOURCE_INGRESS                    = "Ingress"
+
+
+	RESOURCE_HORIZONTAL_POD_AUTOSCALER  = "HorizontalPodAutoscaler"
+
+
+	// networking
 	RESOURCE_NETWORK_POLICY             = "NetworkPolicy"
+
+
 	RESOURCE_POD_PRESET                 = "PodPreset"
+
+
 	RESOURCE_CUSTOM_RESOURCE_DEFINITION = "CustomResourceDefinition"
 )
 
