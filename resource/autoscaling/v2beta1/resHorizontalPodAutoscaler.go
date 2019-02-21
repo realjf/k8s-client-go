@@ -1,13 +1,13 @@
-package resource
+package v2beta1
 
 import (
-	"kboard/exception"
-
 	"gopkg.in/yaml.v2"
+	"k8s-client-go/resource"
+	"errors"
 )
 
 type IResHorizontalPodAutoscaler interface {
-	IResource
+	resource.IResource
 	SetMetadataName(string) error
 	SetNamespace(string) error
 	GetNamespace() string
@@ -26,7 +26,7 @@ type ResHorizontalPodAutoscaler struct {
 }
 
 type HPASpec struct {
-	Selector                       *Selector
+	Selector                       *resource.Selector
 	ScaleTargetRef                 *ScaleTargetRef `yaml:"scaleTargetRef"`
 	TargetCPUUtilizationPercentage int             `yaml:"targetCPUUtilizationPercentage"`
 	MinReplicas                    int             `yaml:"minReplicas"`
@@ -80,7 +80,7 @@ type MetricObjectTarget struct {
 func NewResHorizontalPodAutoscaler() *ResHorizontalPodAutoscaler {
 	return &ResHorizontalPodAutoscaler{
 		ApiVersion: "autoscaling/v2beta1", // k8s>=v1.7
-		Kind:       RESOURCE_HORIZONTAL_POD_AUTOSCALER,
+		Kind:       resource.RESOURCE_HORIZONTAL_POD_AUTOSCALER,
 		Metadata: struct {
 			Name      string
 			Namespace string
@@ -91,7 +91,7 @@ func NewResHorizontalPodAutoscaler() *ResHorizontalPodAutoscaler {
 			Labels:    map[string]string{},
 		},
 		Spec: &HPASpec{
-			Selector: &Selector{
+			Selector: &resource.Selector{
 				MatchLabels:      map[string]string{},
 				MatchExpressions: nil,
 			},
@@ -106,7 +106,7 @@ func NewResHorizontalPodAutoscaler() *ResHorizontalPodAutoscaler {
 
 func (r *ResHorizontalPodAutoscaler) SetMetadataName(name string) error {
 	if name == "" {
-		return exception.NewError("name is empty")
+		return errors.New("name is empty")
 	}
 
 	r.Metadata.Name = name
@@ -115,7 +115,7 @@ func (r *ResHorizontalPodAutoscaler) SetMetadataName(name string) error {
 
 func (r *ResHorizontalPodAutoscaler) SetNamespace(ns string) error {
 	if ns == "" {
-		return exception.NewError("namespace is empty")
+		return errors.New("namespace is empty")
 	}
 	r.Metadata.Namespace = ns
 	return nil
@@ -129,7 +129,7 @@ func (r *ResHorizontalPodAutoscaler) SetMatchLabels(labels map[string]string) er
 	if len(labels) > 0 {
 		for k, v := range labels {
 			if k == "" || v == "" {
-				return exception.NewError("match labels is empty")
+				return errors.New("match labels is empty")
 			}
 			r.Spec.Selector.MatchLabels[k] = v
 		}

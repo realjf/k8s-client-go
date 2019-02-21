@@ -1,4 +1,4 @@
-package resource
+package v2beta1
 
 import "testing"
 
