@@ -21,7 +21,7 @@ type ResSecret struct {
 	Kind       string
 	ApiVersion string `yaml:"apiVersion"`
 	Type       string
-	MetaData   struct {
+	Metadata   struct {
 		Name      string
 		Namespace string
 	}
@@ -33,7 +33,7 @@ func NewSecret() *ResSecret {
 		Kind:       resource.RESOURCE_SECRET,
 		ApiVersion: "v1",
 		Type:       "Opaque",
-		MetaData: struct {
+		Metadata: struct {
 			Name      string
 			Namespace string
 		}{Name: "", Namespace: ""},
@@ -42,17 +42,17 @@ func NewSecret() *ResSecret {
 }
 
 func (r *ResSecret) SetNamespace(ns string) error {
-	r.MetaData.Namespace = ns
+	r.Metadata.Namespace = ns
 	return nil
 }
 
 func (r *ResSecret) SetMetaDataName(name string) error {
-	r.MetaData.Name = name
+	r.Metadata.Name = name
 	return nil
 }
 
 func (r *ResSecret) GetMetaDataName() string {
-	return r.MetaData.Name
+	return r.Metadata.Name
 }
 
 func (r *ResSecret) SetType(typeName string) error {

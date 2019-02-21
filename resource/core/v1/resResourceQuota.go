@@ -17,7 +17,7 @@ type IResResourceQuota interface {
 type ResResourceQuota struct {
 	Kind       string
 	ApiVersion string `yaml:"apiVersion"`
-	MetaData   struct {
+	Metadata   struct {
 		Name      string
 		Namespace string
 	}
@@ -43,7 +43,7 @@ func NewResResourceQuota() *ResResourceQuota {
 	return &ResResourceQuota{
 		Kind:       resource.RESOURCE_RESOURCE_QUOTA,
 		ApiVersion: "v1",
-		MetaData: struct {
+		Metadata: struct {
 			Name      string
 			Namespace string
 		}{Name: "", Namespace: ""},
@@ -64,7 +64,7 @@ func (r *ResResourceQuota) SetNamespace(ns string) error {
 	if ns == "" {
 		return errors.New("namespace is empty")
 	}
-	r.MetaData.Namespace = ns
+	r.Metadata.Namespace = ns
 	return nil
 }
 
@@ -72,12 +72,12 @@ func (r *ResResourceQuota) SetMetaDataName(name string) error {
 	if name == "" {
 		return errors.New("name is empty")
 	}
-	r.MetaData.Name = name
+	r.Metadata.Name = name
 	return nil
 }
 
 func (r *ResResourceQuota) GetNamespace() string {
-	return r.MetaData.Namespace
+	return r.Metadata.Namespace
 }
 
 func (r *ResResourceQuota) ToYamlFile() ([]byte, error) {
