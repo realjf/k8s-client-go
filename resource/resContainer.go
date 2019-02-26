@@ -324,39 +324,3 @@ func NewPort(name string) *Port {
 }
 
 
-func NewVolume() *Volume {
-	return &Volume{
-		Name: "",
-		EmptyDir: struct {
-		}{},
-		HostPath: struct{ Path string }{Path: ""},
-		Secret:   &Secret{SecretName: "", Items: []map[string]string{}},
-		ConfigMap: struct {
-			Name  string
-			Items []map[string]string
-		}{Name: "", Items: []map[string]string{}},
-	}
-}
-
-type Volume struct {
-	Name     string
-	EmptyDir interface{} `yaml:"emptyDir"`
-	HostPath struct {
-		Path string
-	} `yaml:"hostPath"`
-	Secret    *Secret
-	ConfigMap struct {
-		Name  string
-		Items []map[string]string // [key:string, path:string]
-	} `yaml:"configMap"`
-}
-
-type Limits struct {
-	Cpu    string
-	Memory string
-}
-
-type Request struct {
-	Cpu    string
-	Memory string
-}

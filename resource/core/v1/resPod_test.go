@@ -17,13 +17,13 @@ func TestNewPod(t *testing.T) {
 	pod.SetLabels(labels)
 	container := resource.NewContainer("container1", "image1")
 	pod.AddContainer(container)
-	volume := resource.NewVolume()
+	volume := resource.Volume{}
 	volume.Name = "vol1"
 	volume.Secret = &resource.Secret{
 		SecretName: "secret1",
 		Items:      []map[string]string{},
 	}
-	pod.AddVolume(volume)
+	pod.AddVolume(&volume)
 	pod.SetRestartPolicy("policy1")
 
 	t.Fatalf("%v", pod)
