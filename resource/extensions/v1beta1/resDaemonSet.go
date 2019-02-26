@@ -33,7 +33,7 @@ type ResDaemonSet struct {
 
 func NewResDaemonSet() *ResDaemonSet {
 	return &ResDaemonSet{
-		ApiVersion: "apps/v1beta1",
+		ApiVersion: "extensions/v1beta1",
 		Kind:       resource.RESOURCE_DAEMONSET,
 		Metadata: struct {
 			Name      string

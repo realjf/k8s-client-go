@@ -40,7 +40,7 @@ type ResDeployment struct {
 
 func NewResDeployment() *ResDeployment {
 	return &ResDeployment{
-		ApiVersion: "apps/v1beta1",
+		ApiVersion: "extensions/v1beta1",
 		Kind:       resource.RESOURCE_DEPLOYMENT,
 		Metadata: struct {
 			Name      string

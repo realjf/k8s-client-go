@@ -24,6 +24,7 @@ const (
 	RESOURCE_RESOURCE_QUOTA             = "ResourceQuota"
 	RESOURCE_LIMIT_RANGE                = "LimitRange"
 	RESOURCE_ENDPOINTS                  = "Endpoints"
+	RESOURCE_SERVICE_ACCOUNT            = "ServiceAccount"
 
 	// storage
 	RESOURCE_STORAGE_CLASS              = "StorageClass"
@@ -85,6 +86,7 @@ func GetKinds() map[string]string {
 		RESOURCE_POD_PRESET:                 "PodPreset",
 		RESOURCE_CUSTOM_RESOURCE_DEFINITION: "CustomResourceDefinition",
 		RESOURCE_ENDPOINTS:                  "Endpoints",
+		RESOURCE_SERVICE_ACCOUNT:            "ServiceAccount",
 	}
 }
 
