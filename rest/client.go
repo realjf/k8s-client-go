@@ -10,10 +10,12 @@ import (
 
 type IHttpClient interface {
 	Get() (resp *http.Response, err error)
-	Post() (resp *http.Response, err error)
-	Put() (resp *http.Response, err error)
+	Post(body []byte, headers map[string]string) (resp *http.Response, err error)
+	Put(body []byte, headers map[string]string) (resp *http.Response, err error)
 	Delete() (resp *http.Response, err error)
 	Patch() (resp *http.Response, err error)
+
+
 	dial(method string) (resp *http.Response, err error)
 	SetHeader(key string, values ...string)
 
@@ -44,23 +46,44 @@ func (c *HttpClient) getUrl() string {
 	return c.baseUrl.String()
 }
 
-func (c *HttpClient) Get() (resp *http.Response, err error)  {
+func (c *HttpClient) Get() (resp *http.Response, err error) {
 	return c.dial("GET")
 }
 
-func (c *HttpClient) Post() (resp *http.Response, err error) {
+func (c *HttpClient) Post(body []byte, headers map[string]string) (resp *http.Response, err error) {
+	for k, v := range headers {
+		c.headers.Del(k)
+		c.SetHeader(k, v)
+	}
+
+	_, err = c.body.Read(body)
+	if err != nil {
+		return nil, err
+	}
+
 	return c.dial("POST")
 }
 
-func (c *HttpClient) Delete() (resp *http.Response, err error)  {
+func (c *HttpClient) Delete() (resp *http.Response, err error) {
+
 	return c.dial("DELETE")
 }
 
-func (c *HttpClient) Put() (resp *http.Response, err error)  {
+func (c *HttpClient) Put(body []byte, headers map[string]string) (resp *http.Response, err error) {
+	for k, v := range headers {
+		c.headers.Del(k)
+		c.SetHeader(k, v)
+	}
+
+	_, err = c.body.Read(body)
+	if err != nil {
+		return nil, err
+	}
+
 	return c.dial("PUT")
 }
 
-func (c *HttpClient) Patch() (resp *http.Response, err error)  {
+func (c *HttpClient) Patch() (resp *http.Response, err error) {
 	return c.dial("PATCH")
 }
 
@@ -77,7 +100,7 @@ func (c *HttpClient) dial(method string) (resp *http.Response, err error) {
 	return c.Client.Do(req)
 }
 
-func (c *HttpClient) SetHeader(key string, values ...string)  {
+func (c *HttpClient) SetHeader(key string, values ...string) {
 	if c.headers == nil {
 		c.headers = http.Header{}
 	}
