@@ -1,10 +1,10 @@
 package rest
 
 import (
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"testing"
-	"io/ioutil"
 )
 
 func TestNewHttpClient(t *testing.T) {
@@ -21,7 +21,15 @@ func TestNewHttpClient(t *testing.T) {
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
+	//t.Log(string(body))
+
+	resp, err = client.Post(body, map[string]string{})
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+	body, err = ioutil.ReadAll(resp.Body)
 	t.Log(string(body))
+
 	t.Fatal("COM")
 }
 

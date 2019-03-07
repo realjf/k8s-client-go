@@ -18,11 +18,12 @@ type IHttpClient interface {
 
 	dial(method string) (resp *http.Response, err error)
 	SetHeader(key string, values ...string)
-
+	SetUrl(url *url.URL)
+	GetPath() string
 }
 
 type HttpClient struct {
-	baseUrl *url.URL
+	url *url.URL
 
 	headers http.Header
 
@@ -43,7 +44,11 @@ type HttpClient struct {
 func (c *HttpClient) getUrl() string {
 	// 拼接地址
 
-	return c.baseUrl.String()
+	return c.url.String()
+}
+
+func (c *HttpClient) GetPath() string {
+	return c.url.Path
 }
 
 func (c *HttpClient) Get() (resp *http.Response, err error) {
@@ -110,9 +115,13 @@ func (c *HttpClient) SetHeader(key string, values ...string) {
 	}
 }
 
+func (c *HttpClient) SetUrl(url *url.URL) {
+	c.url = url
+}
+
 func NewHttpClient(url *url.URL, headers http.Header) IHttpClient {
 	return &HttpClient{
-		baseUrl: url,
+		url: url,
 		headers:  headers,
 		Client:  &http.Client{},
 	}
