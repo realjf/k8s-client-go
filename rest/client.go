@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"bytes"
 	"context"
 	"io"
 	"net/http"
@@ -61,10 +62,7 @@ func (c *HttpClient) Post(body []byte, headers map[string]string) (resp *http.Re
 		c.SetHeader(k, v)
 	}
 
-	_, err = c.body.Read(body)
-	if err != nil {
-		return nil, err
-	}
+	c.body = bytes.NewReader(body)
 
 	return c.dial("POST")
 }
@@ -80,10 +78,7 @@ func (c *HttpClient) Put(body []byte, headers map[string]string) (resp *http.Res
 		c.SetHeader(k, v)
 	}
 
-	_, err = c.body.Read(body)
-	if err != nil {
-		return nil, err
-	}
+	c.body = bytes.NewReader(body)
 
 	return c.dial("PUT")
 }
@@ -121,8 +116,9 @@ func (c *HttpClient) SetUrl(url *url.URL) {
 
 func NewHttpClient(url *url.URL, headers http.Header) IHttpClient {
 	return &HttpClient{
-		url: url,
-		headers:  headers,
+		url:     url,
+		headers: headers,
 		Client:  &http.Client{},
+		body:    bytes.NewReader([]byte{}),
 	}
 }
