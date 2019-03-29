@@ -1,9 +1,9 @@
 package v1
 
 import (
-	"k8s-client-go/resource"
-	"gopkg.in/yaml.v2"
 	"errors"
+	"gopkg.in/yaml.v2"
+	"k8s-client-go/resource"
 )
 
 // 需要启动时配置ResourceQuota adminssion control
@@ -36,8 +36,6 @@ type Hard struct {
 	Requests               *resource.Request
 	Limits                 *resource.Limits
 }
-
-
 
 func NewResResourceQuota() *ResResourceQuota {
 	return &ResResourceQuota{

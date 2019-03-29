@@ -2,8 +2,8 @@ package v1
 
 import (
 	"errors"
-	"k8s-client-go/resource"
 	"gopkg.in/yaml.v2"
+	"k8s-client-go/resource"
 )
 
 // 对pod所包含的所有container所需的cpu和内存资源进行管理

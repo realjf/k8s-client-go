@@ -1,8 +1,8 @@
 package v1
 
 import (
-	"testing"
 	"k8s-client-go/resource"
+	"testing"
 )
 
 func TestNewPod(t *testing.T) {

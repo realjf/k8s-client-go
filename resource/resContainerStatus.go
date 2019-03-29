@@ -1,21 +1,20 @@
 package resource
 
-
 type ContainerStatus struct {
-	ContainerID string `yaml:"containerID"`
-	Image string
-	ImageID string `yaml:"imageID"`
-	LastState ContainerState `yaml:"lastState"`
-	Name string
-	Ready bool
+	ContainerID  string `yaml:"containerID"`
+	Image        string
+	ImageID      string         `yaml:"imageID"`
+	LastState    ContainerState `yaml:"lastState"`
+	Name         string
+	Ready        bool
 	RestartCount int `yaml:"restartCount"`
-	State ContainerState
+	State        ContainerState
 }
 
 type ContainerState struct {
-	Running ContainerStateRunning
+	Running    ContainerStateRunning
 	Terminated ContainerStateTerminated
-	Waiting ContainerStateWaiting
+	Waiting    ContainerStateWaiting
 }
 
 type ContainerStateRunning struct {
@@ -23,21 +22,19 @@ type ContainerStateRunning struct {
 }
 
 type Time struct {
-
 }
 
 type ContainerStateTerminated struct {
 	ContainerID string `yaml:"containerID"`
-	ExitCode int `yaml:"exitCode"`
-	FinishedAt Time `yaml:"finishedAt"`
-	Message string
-	Reason string
-	Signal int
-	StartedAt Time `yaml:"startedAt"`
+	ExitCode    int    `yaml:"exitCode"`
+	FinishedAt  Time   `yaml:"finishedAt"`
+	Message     string
+	Reason      string
+	Signal      int
+	StartedAt   Time `yaml:"startedAt"`
 }
 
 type ContainerStateWaiting struct {
 	Message string
-	Reason string
+	Reason  string
 }
-

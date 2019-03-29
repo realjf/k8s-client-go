@@ -1,9 +1,9 @@
 package v1
 
 import (
-	"k8s-client-go/resource"
-	"gopkg.in/yaml.v2"
 	"errors"
+	"gopkg.in/yaml.v2"
+	"k8s-client-go/resource"
 )
 
 type IResPod interface {
@@ -27,7 +27,7 @@ type ResPod struct {
 		Labels      map[string]string
 		Annotations map[string]string
 	}
-	Spec *ResPodSpec
+	Spec resource.PodSpec
 }
 
 func NewResPod(name string) *ResPod {
@@ -39,24 +39,19 @@ func NewResPod(name string) *ResPod {
 			Namespace   string
 			Labels      map[string]string
 			Annotations map[string]string
-		}{Name: name, Namespace: "", Labels: map[string]string{}, Annotations: map[string]string{}},
-		Spec: &ResPodSpec{
-			Containers:       []resource.IContainer{},
+		}{
+			Name:        name,
+			Namespace:   "",
+			Labels:      map[string]string{},
+			Annotations: map[string]string{}},
+		Spec: resource.PodSpec{
+			Containers:       []resource.Container{},
 			RestartPolicy:    "",
 			NodeSelector:     struct{}{},
-			ImagePullSecrets: []map[string]string{},
+			ImagePullSecrets: []resource.LocalObjectReference{},
 			HostNetwork:      false,
-			Volumes:          []*resource.Volume{}},
+			Volumes:          []resource.Volume{}},
 	}
-}
-
-type ResPodSpec struct {
-	Containers       []resource.IContainer
-	RestartPolicy    string              `yaml:"restartPolicy"` // [Always | Never | OnFailure]
-	NodeSelector     struct{}            `yaml:"nodeSelector"`
-	ImagePullSecrets []map[string]string `yaml:"imagePullSecrets"`
-	HostNetwork      bool                `yaml:"hostNetwork"`
-	Volumes          []*resource.Volume
 }
 
 func (r *ResPod) SetMetadataName(name string) error {
@@ -83,10 +78,7 @@ func (r *ResPod) SetRestartPolicy(policy string) error {
 	return nil
 }
 
-func (r *ResPod) AddContainer(container resource.IContainer) error {
-	if container == nil {
-		return errors.New("container is nil")
-	}
+func (r *ResPod) AddContainer(container resource.Container) error {
 	r.Spec.Containers = append(r.Spec.Containers, container)
 	return nil
 }
@@ -105,10 +97,7 @@ func (r *ResPod) SetLabels(labels map[string]string) error {
 	return nil
 }
 
-func (r *ResPod) AddVolume(vol *resource.Volume) error {
-	if vol == nil {
-		return errors.New("volume is nil")
-	}
+func (r *ResPod) AddVolume(vol resource.Volume) error {
 	r.Spec.Volumes = append(r.Spec.Volumes, vol)
 	return nil
 }
@@ -133,4 +122,3 @@ func (r *ResPod) ToYamlFile() ([]byte, error) {
 	}
 	return yamlData, nil
 }
-

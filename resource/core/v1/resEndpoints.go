@@ -1,18 +1,16 @@
 package v1
 
-
 import "k8s-client-go/resource"
 
 type IResEndpoints interface {
 	resource.IResource
-
 }
 
 type ResEndpoints struct {
 	ApiVersion string `yaml:"apiVersion"`
-	Kind string
-	Metadata struct{
-		Name string
+	Kind       string
+	Metadata   struct {
+		Name      string
 		Namespace string
 	}
 	Subsets Subset
@@ -20,7 +18,7 @@ type ResEndpoints struct {
 
 type Subset struct {
 	Addresses []SubsetAddr
-	Ports []SubsetPort
+	Ports     []SubsetPort
 }
 
 type SubsetAddr struct {
@@ -28,18 +26,16 @@ type SubsetAddr struct {
 }
 
 type SubsetPort struct {
-	Port     int
+	Port int
 }
 
 func NewResEndpoints() *ResEndpoints {
 	return &ResEndpoints{
 		ApiVersion: "v1",
-		Kind: resource.RESOURCE_ENDPOINTS,
+		Kind:       resource.RESOURCE_ENDPOINTS,
 		Metadata: struct {
 			Name      string
 			Namespace string
 		}{Name: "", Namespace: ""},
 	}
 }
-
-

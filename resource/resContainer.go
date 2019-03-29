@@ -37,7 +37,7 @@ type Container struct {
 	LivenessProbe            Probe           `yaml:"livenessProbe"`
 	ReadinessProbe           Probe           `yaml:"readinessProbe"`
 	Stdin                    bool
-	StdinOnce                bool `yaml:"stdinOnce"`
+	StdinOnce                bool   `yaml:"stdinOnce"`
 	TerminationMessagePath   string `yaml:"terminationMessagePath"`
 	TerminationMessagePolicy string `yaml:"terminationMessagePolicy"`
 	Tty                      bool
