@@ -12,64 +12,118 @@ type IContainer interface {
 	SetCommands([]string) error
 	SetArgs([]string) error
 	SetWorkDir(string) error
-	SetVolumeMount(map[string]interface{}) error
+	SetVolumeMount([]VolumeMount) error
 	SetResource(ContainerResources) error
 	SetEnv(Env) error
-	SetPort(Port) error
-	SetLivenessProbe(LivenessProbe) error
+	SetPort(ContainerPort) error
+	SetLivenessProbe(Probe) error
 	SetReadinessProbe(ReadinessProbe) error
 }
 
 // 容器结构体
 type Container struct {
-	Name            string
-	Image           string
-	ImagePullPolicy string `yaml:"imagePullPolicy"` // [Always | Never | IfNotPresent]
-	Command         []string
-	Args            []string
-	WorkingDir      string                   `yaml:"workingDir"`   // 当前工作目录
-	VolumeMounts    []map[string]interface{} `yaml:"volumeMounts"` // 挂载卷
-	Resources       *ContainerResources
-	Env             []Env
-	Ports           []Port         // 端口号
-	LivenessProbe   *LivenessProbe `yaml:"livenessProbe"`
-	SecurityContext struct {
-		Privileged bool // true-容器运行在特权模式
-	} `yaml:"securityContext"`
+	Args                     []string
+	Command                  []string
+	Env                      []Env
+	EnvFrom                  []EnvFromSource `yaml:"envFromSource"`
+	Name                     string
+	Image                    string
+	ImagePullPolicy          string `yaml:"imagePullPolicy"` // [Always | Never | IfNotPresent]
+	Lifecycle                Lifecycle
+	WorkingDir               string        `yaml:"workingDir"`   // 当前工作目录
+	VolumeMounts             []VolumeMount `yaml:"volumeMounts"` // 挂载卷
+	Resources                *ContainerResources
+	Ports                    []ContainerPort // 端口号
+	LivenessProbe            Probe           `yaml:"livenessProbe"`
+	ReadinessProbe           Probe           `yaml:"readinessProbe"`
+	Stdin                    bool
+	StdinOnce                bool
+	TerminationMessagePath   string `yaml:"terminationMessagePath"`
+	TerminationMessagePolicy string `yaml:"terminationMessagePolicy"`
+	Tty                      bool
+	SecurityContext          SecurityContext `yaml:"securityContext"`
+	VolumeDevices            []VolumeDevice  `yaml:"volumeDevices"`
 }
 
 func NewContainer(name string, image string) *Container {
 	return &Container{
-		Name:          name,
-		Image:         image,
-		Resources:     NewResource(),
-		LivenessProbe: NewLivenessProbe(),
-		SecurityContext: struct{ Privileged bool }{
-			Privileged: false},
+		Name:            name,
+		Image:           image,
+		Resources:       NewResource(),
+		LivenessProbe:   Probe{},
+		SecurityContext: SecurityContext{},
 		Env:             []Env{},
-		Ports:           []Port{},
+		Ports:           []ContainerPort{},
 		Args:            []string{},
 		Command:         []string{},
 		ImagePullPolicy: "",
 		WorkingDir:      "",
-		VolumeMounts:    []map[string]interface{}{},
+		VolumeMounts:    []VolumeMount{},
 	}
 }
 
-func (r *Container) SetPort(port Port) error {
-	if port == (Port{}) {
+func (r *Container) SetPort(port ContainerPort) error {
+	if port == (ContainerPort{}) {
 		return errors.New("port is nil")
 	}
 	r.Ports = append(r.Ports, port)
 	return nil
 }
 
-func (r *Container) SetVolumeMount(vol map[string]interface{}) error {
-	if vol == nil {
+func (r *Container) SetVolumeMount(vols []VolumeMount) error {
+	if vols == nil {
 		return errors.New("volume is nil")
 	}
-	r.VolumeMounts = append(r.VolumeMounts, vol)
+	r.VolumeMounts = vols
 	return nil
+}
+
+type VolumeMount struct {
+	MountPath        string `yaml:"mountPath"`
+	MountPropagation string `yaml:"mountPropagation"`
+	Name             string
+	ReadOnly         bool   `yaml:"readOnly"`
+	SubPath          string `yaml:"subPath"`
+}
+
+type VolumeDevice struct {
+	DevicePath string `yaml:"devicePath"`
+	Name       string
+}
+
+type SecurityContext struct {
+	Privileged               bool   // true-容器运行在特权模式
+	AllowPrivilegeEscalation bool   `yaml:"allowPrivilegeEscalation"`
+	ProcMount                string `yaml:"procMount"`
+	Capabilities             Capabilities
+	ReadOnlyRootFilesystem   bool           `yaml:"readOnlyRootFilesystem"`
+	RunAsGroup               int            `yaml:"runAsGroup"`
+	RunAsNonRoot             bool           `yaml:"runAsNonRoot"`
+	RunAsUser                int            `yaml:"runAsUser"`
+	SeLinuxOptions           SELinuxOptions `yaml:"seLinuxOptions"`
+}
+
+type Capabilities struct {
+	Add  []string
+	Drop []string
+}
+
+type SELinuxOptions struct {
+	Level string
+	Role  string
+	Type  string
+	User  string
+}
+
+type Lifecycle struct {
+	PostStart Handler `yaml:"postStart"`
+	PreStop   Handler `yaml:"preStop"`
+}
+
+type Handler struct {
+	Exec      ExecAction      `yaml:"exec"`
+	HttpGet   HttpGetAction   `yaml:"httpGet"`
+	TcpSocket TcpSocketAction `yaml:"tcpSocket"`
 }
 
 type Env struct {
@@ -94,18 +148,20 @@ type ResourceFieldRef struct {
 type ValueFromHandler interface {
 }
 
-func NewEnv() Env {
-	return Env{
-		Name: "",
-		ValueFrom: &ValueFrom{
-			FieldRef: &FieldRef{
-				FieldPath: "",
-			},
-			ResourceFieldRef: &ResourceFieldRef{
-				ContainerName: "",
-				Resource:      "",
-			},
-		}}
+type EnvFromSource struct {
+	ConfigMapRef ConfigMapEnvSource `yaml:"configMapRef"`
+	Prefix       string
+	SecretRef    SecretEnvSource `yaml:"secretRef"`
+}
+
+type ConfigMapEnvSource struct {
+	Name     string
+	Optional bool
+}
+
+type SecretEnvSource struct {
+	Name     string
+	Optional bool
 }
 
 func (r *Container) SetEnv(env Env) error {
@@ -174,10 +230,10 @@ func (r *Container) SetWorkDir(wkdir string) error {
 	return nil
 }
 
-func (r *Container) SetLivenessProbe(liveness LivenessProbe) error {
+func (r *Container) SetLivenessProbe(liveness Probe) error {
 	if liveness.HttpGet != nil {
 		// http get 方式检查 port、path
-		if liveness.Path == "" || liveness.Port == 0 {
+		if liveness.HttpGet.Path == "" || liveness.HttpGet.Port == "" {
 			return errors.New("liveness probe use httpget way, need path and port")
 		}
 	} else if liveness.TcpSocket.Port == 0 {
@@ -202,7 +258,7 @@ func (r *Container) SetLivenessProbe(liveness LivenessProbe) error {
 	if liveness.TimeoutSeconds <= 0 {
 		return errors.New("timeout second is invalid")
 	}
-	r.LivenessProbe = &liveness
+	r.LivenessProbe = liveness
 	return nil
 }
 
@@ -242,10 +298,6 @@ func (r *Container) SetResource(res ContainerResources) error {
 	return nil
 }
 
-func NewLivenessProbe() *LivenessProbe {
-	return &LivenessProbe{}
-}
-
 type ProbeAction struct {
 	Exec      *ExecAction      `yaml:"exec"`
 	HttpGet   *HttpGetAction   `yaml:"httpGet"`
@@ -268,15 +320,13 @@ type HttpGetAction struct {
 	HttpHeaders []map[string]string `yaml:"httpHeaders"`
 }
 
-type LivenessProbe struct {
+type Probe struct {
 	ProbeAction         `yaml:",inline"`
 	InitialDelaySeconds int `yaml:"initialDelaySeconds"`
 	TimeoutSeconds      int `yaml:"timeoutSeconds"`
 	PeriodSeconds       int `yaml:"periodSeconds"`
 	SuccessThreshold    int `yaml:"successThreshold"`
 	FailureThreshold    int `yaml:"failureThreshold"`
-	Path                string
-	Port                int
 }
 
 type ReadinessProbe struct {
@@ -314,6 +364,14 @@ type Port struct {
 	Protocol      string // 仅支持 TCP UDP
 }
 
+type ContainerPort struct {
+	Name          string
+	ContainerPort int    `yaml:"containerPort"`
+	HostPort      int    `yaml:"hostPort"`
+	Protocol      string // 仅支持 TCP UDP
+	HostIP        string `yaml:"hostIP"`
+}
+
 func NewPort(name string) *Port {
 	return &Port{
 		Name:          name,
@@ -322,5 +380,3 @@ func NewPort(name string) *Port {
 		Protocol:      "",
 	}
 }
-
-

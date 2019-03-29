@@ -15,9 +15,5 @@ type infDecAmount struct {
 
 type Dec struct {
 	unscaled big.Int
-	scale Scale
+	scale    Scale
 }
-
-
-
-

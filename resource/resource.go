@@ -6,54 +6,49 @@ type IResource interface {
 
 type Resource struct {
 	ApiVersion string `yaml:"apiVersion"`
-	Kind string
+	Kind       string
 }
 
 // 资源类型
 const (
 	// core
-	RESOURCE_CONFIG_MAP                 = "ConfigMap"
-	RESOURCE_PERSISTENT_VOLUME_CLAIM    = "PersistentVolumeClaim"
-	RESOURCE_PERSISTENT_VOLUME          = "PersistentVolume"
-	RESOURCE_SECRET                     = "Secret"
-	RESOURCE_POD                        = "Pod"
-	RESOURCE_SERVICE                    = "Service"
-	RESOURCE_REPLICATION_CONTROLLER     = "ReplicationController"
-	RESOURCE_NAMESPACE                  = "Namespace"
-	RESOURCE_NODE                       = "Node"
-	RESOURCE_RESOURCE_QUOTA             = "ResourceQuota"
-	RESOURCE_LIMIT_RANGE                = "LimitRange"
-	RESOURCE_ENDPOINTS                  = "Endpoints"
-	RESOURCE_SERVICE_ACCOUNT            = "ServiceAccount"
+	RESOURCE_CONFIG_MAP              = "ConfigMap"
+	RESOURCE_PERSISTENT_VOLUME_CLAIM = "PersistentVolumeClaim"
+	RESOURCE_PERSISTENT_VOLUME       = "PersistentVolume"
+	RESOURCE_SECRET                  = "Secret"
+	RESOURCE_POD                     = "Pod"
+	RESOURCE_SERVICE                 = "Service"
+	RESOURCE_REPLICATION_CONTROLLER  = "ReplicationController"
+	RESOURCE_NAMESPACE               = "Namespace"
+	RESOURCE_NODE                    = "Node"
+	RESOURCE_RESOURCE_QUOTA          = "ResourceQuota"
+	RESOURCE_LIMIT_RANGE             = "LimitRange"
+	RESOURCE_ENDPOINTS               = "Endpoints"
+	RESOURCE_SERVICE_ACCOUNT         = "ServiceAccount"
 
 	// storage
-	RESOURCE_STORAGE_CLASS              = "StorageClass"
-
+	RESOURCE_STORAGE_CLASS = "StorageClass"
 
 	// apps
-	RESOURCE_STATEFULE_SET              = "StatefulSet"
-	RESOURCE_DAEMONSET                  = "DaemonSet"
-	RESOURCE_DEPLOYMENT                 = "Deployment"
-	RESOURCE_INGRESS_CONTROLLER         = "IngressController"
-	RESOURCE_REPLICASET                 = "ReplicaSet"
+	RESOURCE_STATEFULE_SET      = "StatefulSet"
+	RESOURCE_DAEMONSET          = "DaemonSet"
+	RESOURCE_DEPLOYMENT         = "Deployment"
+	RESOURCE_INGRESS_CONTROLLER = "IngressController"
+	RESOURCE_REPLICASET         = "ReplicaSet"
 
 	// batch
-	RESOURCE_JOB                        = "Job"
-	RESOURCE_CRON_JOB                   = "CronJob"
+	RESOURCE_JOB      = "Job"
+	RESOURCE_CRON_JOB = "CronJob"
 
 	// extensions
-	RESOURCE_INGRESS                    = "Ingress"
+	RESOURCE_INGRESS = "Ingress"
 
-
-	RESOURCE_HORIZONTAL_POD_AUTOSCALER  = "HorizontalPodAutoscaler"
-
+	RESOURCE_HORIZONTAL_POD_AUTOSCALER = "HorizontalPodAutoscaler"
 
 	// networking
-	RESOURCE_NETWORK_POLICY             = "NetworkPolicy"
+	RESOURCE_NETWORK_POLICY = "NetworkPolicy"
 
-
-	RESOURCE_POD_PRESET                 = "PodPreset"
-
+	RESOURCE_POD_PRESET = "PodPreset"
 
 	RESOURCE_CUSTOM_RESOURCE_DEFINITION = "CustomResourceDefinition"
 )

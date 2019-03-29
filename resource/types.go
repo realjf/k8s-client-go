@@ -1,8 +1,7 @@
 package resource
 
-
 type Volume struct {
-	Name     string `json:"name" protobuf:"bytes,1,opt,name=name"`
+	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 
 	VolumeSource `json:",inline" protobuf:"bytes,2,opt,name=volumeSource"`
 }
@@ -29,7 +28,6 @@ type VolumeSource struct {
 }
 
 type SecretVolumeSource struct {
-
 }
 
 type EmptyDirVolumeSource struct {
@@ -53,23 +51,23 @@ type PersistentVolumeClaimVolumeSource struct {
 }
 
 type RBDVolumeSource struct {
-	CephMonitors []string `json:"monitors" protobuf:"bytes,1,rep,name=monitors"`
-	RBDImage string `json:"image" protobuf:"bytes,2,opt,name=image"`
-	FSType string `json:"fsType,omitempty" protobuf:"bytes,3,opt,name=fsType"`
-	RBDPool string `json:"pool,omitempty" protobuf:"bytes,4,opt,name=pool"`
-	RadosUser string `json:"user,omitempty" protobuf:"bytes,5,opt,name=user"`
-	Keyring string `json:"keyring,omitempty" protobuf:"bytes,6,opt,name=keyring"`
-	SecretRef *LocalObjectReference `json:"secretRef,omitempty" protobuf:"bytes,7,opt,name=secretRef"`
-	ReadOnly bool `json:"readOnly,omitempty" protobuf:"varint,8,opt,name=readOnly"`
+	CephMonitors []string              `json:"monitors" protobuf:"bytes,1,rep,name=monitors"`
+	RBDImage     string                `json:"image" protobuf:"bytes,2,opt,name=image"`
+	FSType       string                `json:"fsType,omitempty" protobuf:"bytes,3,opt,name=fsType"`
+	RBDPool      string                `json:"pool,omitempty" protobuf:"bytes,4,opt,name=pool"`
+	RadosUser    string                `json:"user,omitempty" protobuf:"bytes,5,opt,name=user"`
+	Keyring      string                `json:"keyring,omitempty" protobuf:"bytes,6,opt,name=keyring"`
+	SecretRef    *LocalObjectReference `json:"secretRef,omitempty" protobuf:"bytes,7,opt,name=secretRef"`
+	ReadOnly     bool                  `json:"readOnly,omitempty" protobuf:"varint,8,opt,name=readOnly"`
 }
 
 type CephFSVolumeSource struct {
-	Monitors []string `json:"monitors" protobuf:"bytes,1,req,name=monitors"`
-	Path string `json:"path,omitempty" protobuf:"bytes,2,opt,name=path"`
-	User string `json:"user,omitempty" protobuf:"bytes,3,opt,name=user"`
-	SecretFile string `json:"secretFile,omitempty" protobuf:"bytes,4,opt,name=secretFile"`
-	SecretRef *SecretReference `json:"secretRef,omitempty" protobuf:"bytes,5,opt,name=secretRef"`
-	ReadOnly bool `json:"readOnly,omitempty" protobuf:"varint,6,opt,name=readOnly"`
+	Monitors   []string         `json:"monitors" protobuf:"bytes,1,req,name=monitors"`
+	Path       string           `json:"path,omitempty" protobuf:"bytes,2,opt,name=path"`
+	User       string           `json:"user,omitempty" protobuf:"bytes,3,opt,name=user"`
+	SecretFile string           `json:"secretFile,omitempty" protobuf:"bytes,4,opt,name=secretFile"`
+	SecretRef  *SecretReference `json:"secretRef,omitempty" protobuf:"bytes,5,opt,name=secretRef"`
+	ReadOnly   bool             `json:"readOnly,omitempty" protobuf:"varint,6,opt,name=readOnly"`
 }
 
 type DownwardAPIVolumeSource struct {
@@ -90,30 +88,30 @@ type DownwardAPIVolumeFile struct {
 
 type ConfigMapVolumeSource struct {
 	LocalObjectReference `json:",inline" protobuf:"bytes,1,opt,name=localObjectReference"`
-	Items []KeyToPath `json:"items,omitempty" protobuf:"bytes,2,rep,name=items"`
-	DefaultMode *int32 `json:"defaultMode,omitempty" protobuf:"varint,3,opt,name=defaultMode"`
-	Optional *bool `json:"optional,omitempty" `
+	Items                []KeyToPath `json:"items,omitempty" protobuf:"bytes,2,rep,name=items"`
+	DefaultMode          *int32      `json:"defaultMode,omitempty" protobuf:"varint,3,opt,name=defaultMode"`
+	Optional             *bool       `json:"optional,omitempty" `
 }
 
 type KeyToPath struct {
-	Key string `json:"key" protobuf:"bytes,1,opt,name=key"`
+	Key  string `json:"key" protobuf:"bytes,1,opt,name=key"`
 	Path string `json:"path" protobuf:"bytes,2,opt,name=path"`
 	Mode *int32 `json:"mode,omitempty" protobuf:"varint,3,opt,name=mode"`
 }
 
 type ObjectFieldSelector struct {
 	APIVersion string `json:"apiVersion,omitempty" protobuf:"bytes,1,opt,name=apiVersion"`
-	FieldPath string `json:"fieldPath" protobuf:"bytes,2,opt,name=fieldPath"`
+	FieldPath  string `json:"fieldPath" protobuf:"bytes,2,opt,name=fieldPath"`
 }
 
 type ResourceFieldSelector struct {
-	ContainerName string `json:"containerName,omitempty" protobuf:"bytes,1,opt,name=containerName"`
-	Resource string `json:"resource" protobuf:"bytes,2,opt,name=resource"`
-	Divisor Quantity `json:"divisor,omitempty" protobuf:"bytes,3,opt,name=divisor"`
+	ContainerName string   `json:"containerName,omitempty" protobuf:"bytes,1,opt,name=containerName"`
+	Resource      string   `json:"resource" protobuf:"bytes,2,opt,name=resource"`
+	Divisor       Quantity `json:"divisor,omitempty" protobuf:"bytes,3,opt,name=divisor"`
 }
 
 type SecretReference struct {
-	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
+	Name      string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
 	Namespace string `json:"namespace,omitempty" protobuf:"bytes,2,opt,name=namespace"`
 }
 
@@ -131,11 +129,6 @@ type HostPathType string
 
 type StorageMedium string
 
-
-
-
-
-
 type Limits struct {
 	Cpu    string
 	Memory string
@@ -145,7 +138,3 @@ type Request struct {
 	Cpu    string
 	Memory string
 }
-
-
-
-
