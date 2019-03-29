@@ -17,9 +17,8 @@ func TestNewContainer(t *testing.T) {
 	port := ContainerPort{}
 	port.Name = "port"
 	container.SetPort(port)
-	container.SetVolumeMount(map[string]interface{}{
-		"volume1": "1313",
-	})
+	volumeMount := []VolumeMount{}
+	container.SetVolumeMount(volumeMount)
 
 	t.Fatalf("%v", container)
 }

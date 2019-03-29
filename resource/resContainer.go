@@ -25,19 +25,19 @@ type Container struct {
 	Args                     []string
 	Command                  []string
 	Env                      []Env
-	EnvFrom                  []EnvFromSource `yaml:"envFromSource"`
+	EnvFrom                  []EnvFromSource `yaml:"envFrom"`
 	Name                     string
 	Image                    string
 	ImagePullPolicy          string `yaml:"imagePullPolicy"` // [Always | Never | IfNotPresent]
 	Lifecycle                Lifecycle
 	WorkingDir               string        `yaml:"workingDir"`   // 当前工作目录
 	VolumeMounts             []VolumeMount `yaml:"volumeMounts"` // 挂载卷
-	Resources                *ContainerResources
+	Resources                ContainerResources
 	Ports                    []ContainerPort // 端口号
 	LivenessProbe            Probe           `yaml:"livenessProbe"`
 	ReadinessProbe           Probe           `yaml:"readinessProbe"`
 	Stdin                    bool
-	StdinOnce                bool
+	StdinOnce                bool `yaml:"stdinOnce"`
 	TerminationMessagePath   string `yaml:"terminationMessagePath"`
 	TerminationMessagePolicy string `yaml:"terminationMessagePolicy"`
 	Tty                      bool
@@ -49,7 +49,7 @@ func NewContainer(name string, image string) *Container {
 	return &Container{
 		Name:            name,
 		Image:           image,
-		Resources:       NewResource(),
+		Resources:       ContainerResources{},
 		LivenessProbe:   Probe{},
 		SecurityContext: SecurityContext{},
 		Env:             []Env{},
@@ -294,7 +294,7 @@ func (r *Container) SetResource(res ContainerResources) error {
 	if res.Requests.Cpu == "" || res.Requests.Memory == "" {
 		return errors.New("request cpu or memory is empty")
 	}
-	r.Resources = &res
+	r.Resources = res
 	return nil
 }
 
