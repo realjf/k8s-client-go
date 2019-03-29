@@ -3,28 +3,28 @@ package resource
 type Volume struct {
 	Name string `json:"name" protobuf:"bytes,1,opt,name=name"`
 
-	VolumeSource `json:",inline" protobuf:"bytes,2,opt,name=volumeSource"`
+	VolumeSource `json:",inline" yaml:",inline" protobuf:"bytes,2,opt,name=volumeSource"`
 }
 
 type VolumeSource struct {
-	HostPath *HostPathVolumeSource `json:"hostPath,omitempty" protobuf:"bytes,1,opt,name=hostPath"`
+	HostPath *HostPathVolumeSource `json:"hostPath,omitempty" yaml:"hostPath" protobuf:"bytes,1,opt,name=hostPath"`
 
-	EmptyDir *EmptyDirVolumeSource `json:"emptyDir,omitempty" protobuf:"bytes,2,opt,name=emptyDir"`
+	EmptyDir *EmptyDirVolumeSource `json:"emptyDir,omitempty" yaml:"emptyDir" protobuf:"bytes,2,opt,name=emptyDir"`
 
 	Secret *SecretVolumeSource `json:"secret,omitempty" protobuf:"bytes,6,opt,name=secret"`
 
 	Glusterfs *GlusterfsVolumeSource `json:"glusterfs,omitempty" protobuf:"bytes,9,opt,name=glusterfs"`
 
-	PersistentVolumeClaim *PersistentVolumeClaimVolumeSource `json:"persistentVolumeClaim,omitempty" protobuf:"bytes,10,opt,name=persistentVolumeClaim"`
+	PersistentVolumeClaim *PersistentVolumeClaimVolumeSource `json:"persistentVolumeClaim,omitempty" yaml:"persistentVolumeClaim" protobuf:"bytes,10,opt,name=persistentVolumeClaim"`
 
 	// +optional
-	RBD *RBDVolumeSource `json:"rbd,omitempty" protobuf:"bytes,11,opt,name=rbd"`
+	RBD *RBDVolumeSource `json:"rbd,omitempty" yaml:"rbd" protobuf:"bytes,11,opt,name=rbd"`
 
-	CephFS *CephFSVolumeSource `json:"cephfs,omitempty" protobuf:"bytes,14,opt,name=cephfs"`
+	CephFS *CephFSVolumeSource `json:"cephfs,omitempty" yaml:"cephfs" protobuf:"bytes,14,opt,name=cephfs"`
 
-	DownwardAPI *DownwardAPIVolumeSource `json:"downwardAPI,omitempty" protobuf:"bytes,16,opt,name=downwardAPI"`
+	DownwardAPI *DownwardAPIVolumeSource `json:"downwardAPI,omitempty" yaml:"downwardAPI" protobuf:"bytes,16,opt,name=downwardAPI"`
 
-	ConfigMap *ConfigMapVolumeSource `json:"configMap,omitempty" protobuf:"bytes,19,opt,name=configMap"`
+	ConfigMap *ConfigMapVolumeSource `json:"configMap,omitempty" yaml:"configMap" protobuf:"bytes,19,opt,name=configMap"`
 }
 
 type SecretVolumeSource struct {
