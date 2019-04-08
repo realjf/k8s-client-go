@@ -1,5 +1,93 @@
 package resource
 
+
+type ObjectMeta struct {
+	Annotations map[string]string
+	ClusterName string `yaml:"clusterName"`
+	CreationTimestamp Time `yaml:"creationTimestamp"`
+	DeletionGracePeriodSeconds int `yaml:"deletionGracePeriodSeconds"`
+	DeletionTimestamp Time `yaml:"deletionTimestamp"`
+	Finalizers []string
+	GenerateName string `yaml:"generateName"`
+	Generation int
+	Initializers Initializers
+	Labels map[string]string
+	ManagedFields []ManagedFieldsEntry `yaml:"managedFields"`
+	Name string
+	Namespace string
+	OwnerReferences []OwnerReference `yaml:"ownerReferences"`
+	ResourceVersion string `yaml:"resourceVersion"`
+	SelfLink string `yaml:"selfLink"`
+	Uid string
+}
+
+type Initializers struct {
+	Pending []Initializer
+	Result Status
+}
+
+type Initializer struct {
+	Name string
+}
+
+type Status struct {
+	ApiVersion string
+	Code int
+	Details StatusDetails
+	Kind string
+	Message string
+	Metadata ListMeta
+	Reason string
+	Status string
+}
+
+type ListMeta struct {
+	Continue string
+	ResourceVersion string `yaml:"resourceVersion"`
+	SelfLink string `yaml:"selfLink"`
+}
+
+type StatusDetails struct {
+	Causes []StatusCause
+	Group string
+	Kind string
+	Name string
+	RetryAfterSeconds int `yaml:"retryAfterSeconds"`
+	Uid string
+}
+
+type StatusCause struct {
+	Field string
+	Message string
+	Reason string
+}
+
+type ManagedFieldsEntry struct {
+	ApiVersion string `yaml:"apiVersion"`
+	Fields Fields
+	Manager string
+	Operation string
+	Time Time
+}
+
+type Fields struct {
+
+}
+
+type OwnerReference struct {
+	ApiVersion string `yaml:"apiVersion"`
+	BlockOwnerDeletion bool `yaml:"blockOwnerDeletion"`
+	Controller bool
+	Kind string
+	Name string
+	Uid string
+}
+
+type PodTemplateSpec struct {
+	Metadata ObjectMeta
+	Spec PodSpec
+}
+
 type PodSpec struct {
 	ActiveDeadlineSeconds         int `yaml:"activeDeadlineSeconds"`
 	Affinity                      Affinity

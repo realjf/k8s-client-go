@@ -20,6 +20,48 @@ type ResCronJob struct {
 		Name      string
 		Namespace string
 	}
+	Spec CronJobSpec
+	Status CronJobStatus
+}
+
+type CronJobSpec struct {
+	ConcurrencyPolicy string `yaml:"concurrencyPolicy"`
+	FailedJobsHistoryLimit int `yaml:"failedJobsHistoryLimit"`
+	JobTemplate JobTemplateSpec `yaml:"jobTemplate"`
+	Schedule string
+	StartingDeadlineSeconds int `yaml:"startingDeadlineSeconds"`
+	SuccessfulJobsHistoryLimit int `yaml:"successfulJobsHistoryLimit"`
+	Suspend bool
+}
+
+type JobTemplateSpec struct {
+	Metadata resource.ObjectMeta
+	Spec JobSpec
+}
+
+type JobSpec struct {
+	ActiveDeadlineSeconds int `yaml:"activeDeadlineSeconds"`
+	BackoffLimit int `yaml:"backoffLimit"`
+	Completions int
+	ManualSelector bool `yaml:"manualSelector"`
+	Parallelism int
+	Selector resource.LabelSelector
+	Template resource.PodTemplateSpec
+	TtlSecondAfterFinished int `yaml:"ttlSecondAfterFinished"`
+}
+
+type CronJobStatus struct {
+	Active []ObjectReference
+	LastScheduleTime resource.Time `yaml:"lastScheduleTime"`
+}
+
+type ObjectReference struct {
+	ApiVersion string `yaml:"apiVersion"`
+	FieldPath string `yaml:"fieldPath"`
+	Kind string
+	Namespace string
+	ResourceVersion string `yaml:"resourceVersion"`
+	Uid string
 }
 
 func NewResCronJob() *ResCronJob {
